@@ -8,13 +8,8 @@ const Results = () => {
   const [queryCounter, setQueryCounter] = useState(0);
   const [list, setList] = useState([]);
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
   useEffect(() => {
     const results = [];
-    const searchWords = [query, capitalizeFirstLetter(query)];
     let occurrencesCounter = 0;
 
     for (let index = 0; index < data.length; index++) {
@@ -23,8 +18,8 @@ const Results = () => {
       const words = [];
 
       for (let j = 0; j < txtArr.length; j++) {
-        const word = txtArr[j].replace(/^(?:")(.*)(?:")$/, "$1");
-        if (searchWords.includes(word)) {
+        const word = txtArr[j].replace(/^(?:")(.*)(?:")$/, "$1").toLowerCase();
+        if (word === query) {
           occurrencesCounter++;
           words.push(`<mark>${txtArr[j]}</mark>`);
         } else {
@@ -55,7 +50,6 @@ const Results = () => {
               renderItem={(item, key) => (
                 <li key={key} className="list-group-item">
                   <a href={item.url} target="_blank">
-                    {/* <Highlighter textToHighlight={item.text} /> */}
                     <div dangerouslySetInnerHTML={{ __html: item.text }} />
                   </a>
                 </li>
